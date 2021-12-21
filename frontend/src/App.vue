@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light font-weight-bold .bg-light">
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link to="/home" class="nav-link">
-            <img src="./assets/logo.png" class="navbar-brand logo" />
-          </router-link>
+      <router-link to="/home" class="nav-link">
+        <img src="./assets/logo.png" class="navbar-brand logo" />
+      </router-link>
         </li>
+      </div>
+      <div class="navbar-nav mr-auto">
         <li v-if="showAdminContent" class="nav-item">
           <router-link to="/admin" class="nav-link">Admin Content</router-link>
         </li>
@@ -39,7 +41,7 @@
           <router-link to="/articles" class="nav-link">News Feed</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/add" class="nav-link">Add a new post</router-link>
+          <router-link to="/add" class="nav-link">New post</router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href @click.prevent="logOut">
@@ -82,5 +84,9 @@ export default {
 .logo {
   height: 45px;
   width: auto;
+}
+
+.navbar {
+  box-shadow: 0px 10px 20px #c0c0c0;
 }
 </style>

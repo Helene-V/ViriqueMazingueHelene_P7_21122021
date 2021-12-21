@@ -14,11 +14,10 @@
       </div>
     </div>
     <div class="row gx-4 gx-lg-5">
-      <h4>Posts</h4>
-      <ul class="list-group">
-        <li class="list-group-item"
+      <ul class="b-list-group">
+        <li class="b-list-group-item mt-2"
           :class="{ active: index == currentIndex }"
-          v-for="(article, index) in articles"
+          v-for="(article, index) in articles.slice().reverse()"
           :key="index"
           @click="setActiveArticle(article, index)"
         >
@@ -28,7 +27,9 @@
               <h2 class="card-title">{{ article.title }}</h2>
               <p class="card-text">{{ article.description }}</p>
             </div>
-            <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">Commentaires</a></div>
+            <div class="card-footer">
+              <a class="btn btn-info btn-sm" href="#!">Commentaires</a>
+            </div>
             </div>
           </div>
         </li>
@@ -36,17 +37,6 @@
     </div>
     <div class="col-md-6">
       <div v-if="currentArticle">
-        <h4>Post</h4>
-        <div>
-          <label><strong>Title:</strong></label> {{ currentArticle.title }}
-        </div>
-        <div>
-          <label><strong>Description:</strong></label> {{ currentArticle.description }}
-        </div>
-        <div>
-          <label><strong>Status:</strong></label> {{ currentArticle.published ? "Published" : "Pending" }}
-        </div>
-
         <router-link :to="'/articles/' + currentArticle.id" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
@@ -115,5 +105,9 @@ export default {
   text-align: left;
   max-width: 750px;
   margin: auto;
+}
+
+ul {
+  list-style-type: none;
 }
 </style>
