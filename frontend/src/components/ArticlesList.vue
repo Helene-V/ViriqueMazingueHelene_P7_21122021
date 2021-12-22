@@ -1,5 +1,6 @@
 <template>
   <div class="list row mt-5">
+    <h1 class="pr-5">News Feed</h1>
     <div class="col-md-8">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search by title"
@@ -8,7 +9,7 @@
           <button class="btn btn-outline-secondary" type="button"
             @click="searchTitle"
           >
-            Search
+          <font-awesome-icon icon="search" />
           </button>
         </div>
       </div>
@@ -28,21 +29,15 @@
               <p class="card-text">{{ article.description }}</p>
             </div>
             <div class="card-footer">
-              <a class="btn btn-info btn-sm" href="#!">Commentaires</a>
+              <a class="btn btn-info btn-sm" href="#!"><font-awesome-icon icon="comments" /></a>                 
+            <div class="btn btn-sm" v-if="currentArticle">
+              <router-link :to="'/articles/' + currentArticle.id" class="badge badge-warning">Edit</router-link>
+            </div>
             </div>
             </div>
           </div>
         </li>
       </ul>
-    </div>
-    <div class="col-md-6">
-      <div v-if="currentArticle">
-        <router-link :to="'/articles/' + currentArticle.id" class="badge badge-warning">Edit</router-link>
-      </div>
-      <div v-else>
-        <br />
-        <p>Please click on a Post...</p>
-      </div>
     </div>
   </div>
 </template>
@@ -102,12 +97,15 @@ export default {
 
 <style>
 .list {
-  text-align: left;
   max-width: 750px;
   margin: auto;
 }
 
 ul {
   list-style-type: none;
+}
+
+.b-list-group {
+  padding: 0;
 }
 </style>

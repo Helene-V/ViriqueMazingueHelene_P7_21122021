@@ -8,14 +8,6 @@
       </router-link>
         </li>
       </div>
-      <div class="navbar-nav mr-auto">
-        <li v-if="showAdminContent" class="nav-item">
-          <router-link to="/admin" class="nav-link">Admin Content</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link">User Content</router-link>
-        </li>
-      </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
@@ -63,13 +55,7 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
-    showAdminContent() {
-      if (this.currentUser && this.currentUser.roles) {
-        return this.currentUser.roles.includes('ROLE_ADMIN');
-      }
 
-      return false;
-    },
   },
   methods: {
     logOut() {

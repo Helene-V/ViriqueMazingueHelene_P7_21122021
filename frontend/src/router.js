@@ -50,18 +50,6 @@ export const router = new Router({
       name: 'add',
       component: () => import("./components/AddArticle.vue")
     },
-    {
-      path: '/admin',
-      name: 'admin',
-      // lazy-loaded
-      component: () => import('./components/ContentAdmin.vue')
-    },
-    {
-      path: '/user',
-      name: 'user',
-      // lazy-loaded
-      component: () => import('./components/ContentUser.vue')
-    }
   ]
 });
 

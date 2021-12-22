@@ -5,11 +5,6 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Article
 exports.create = (req, res) => {
-  let id = token.getUserId(req.headers.authorization)
-  models.User.findOne({
-    attributes: ['id', 'email', 'username'],
-    where: { id: id }
-  })
 
   // Validate request
   if (!req.body.title) {
