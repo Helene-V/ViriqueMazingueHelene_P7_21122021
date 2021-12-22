@@ -42,3 +42,6 @@ db.user.belongsToMany(db.role, {
 db.ROLES = ["user", "admin"];
 
 module.exports = db;
+
+
+//https://sequelize.org/master/manual/advanced-many-to-many.html#many-to-many-to-many-relationships-and-beyond

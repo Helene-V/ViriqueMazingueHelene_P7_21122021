@@ -1,9 +1,16 @@
-const db = require("../models");
+const db = require('../models');
+const token = require('../middleware/authJwt');
 const Article = db.articles;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Article
 exports.create = (req, res) => {
+  let id = token.getUserId(req.headers.authorization)
+  models.User.findOne({
+    attributes: ['id', 'email', 'username'],
+    where: { id: id }
+  })
+
   // Validate request
   if (!req.body.title) {
     res.status(400).send({
@@ -150,3 +157,5 @@ exports.findAllPublished = (req, res) => {
       });
     });
 };
+
+//https://medium.com/@sarahdherr/sequelizes-update-method-example-included-39dfed6821d

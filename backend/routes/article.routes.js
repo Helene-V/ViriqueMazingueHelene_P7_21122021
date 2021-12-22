@@ -1,10 +1,12 @@
+const multer = require('../middleware/multer-config');
+
 module.exports = app => {
     const articles = require("../controllers/article.controller.js");
   
     const router = require("express").Router();
   
     // Create a new Article
-    router.post("/", articles.create);
+    router.post("/", multer, articles.create);
   
     // Retrieve all Articles
     router.get("/", articles.findAll);
@@ -16,7 +18,7 @@ module.exports = app => {
     router.get("/:id", articles.findOne);
   
     // Update a Article with id
-    router.put("/:id", articles.update);
+    router.put("/:id", multer, articles.update);
   
     // Delete a Article with id
     router.delete("/:id", articles.delete);
@@ -26,6 +28,8 @@ module.exports = app => {
   
     app.use('/api/articles', router);
   };
+
+//P6 : auth sur les routes 
 
   /* Récap de l'API :
   GET --> api/articles --> récupére tous les Articles
