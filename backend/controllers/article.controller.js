@@ -1,7 +1,8 @@
 const db = require('../models');
-const token = require('../middleware/authJwt');
+const fs = require('fs')
 const Article = db.articles;
 const Op = db.Sequelize.Op;
+
 
 // Create and Save a new Article
 exports.create = (req, res) => {
@@ -14,11 +15,12 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Article
+// Create a Article
   const article = {
     title: req.body.title,
     description: req.body.description,
-    published: req.body.published ? req.body.published : false
+    published: req.body.published ? req.body.published : false,
+    selectedFile: req.body.selectedFile, // Ajout fichier image
   };
 
   // Save Article in the database
@@ -154,3 +156,18 @@ exports.findAllPublished = (req, res) => {
 };
 
 //https://medium.com/@sarahdherr/sequelizes-update-method-example-included-39dfed6821d
+
+/*
+exports.delete = (req, res) => {
+  const id = req.params.id
+    .then(article => {
+      const filename = thing.imageUrl.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {
+        article.destroy({ id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+          .catch(error => res.status(400).json({ error }));
+      });
+    })
+    .catch(error => res.status(500).json({ error }));
+};
+*/

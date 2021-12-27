@@ -16,6 +16,8 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+const path = require('path');
+
 // database
 const db = require("../backend/models");
 const Role = db.role;
@@ -36,6 +38,8 @@ app.get("/", (req, res) => {
 require('../backend/routes/auth.routes')(app);
 require('../backend/routes/user.routes')(app);
 require("../backend/routes/article.routes")(app);
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

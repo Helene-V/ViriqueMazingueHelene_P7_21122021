@@ -24,7 +24,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.articles = require("./article.model.js")(sequelize, Sequelize);
+db.articles = require("./article.model.js")(sequelize, Sequelize); // POSTS DONT IMAGES
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 

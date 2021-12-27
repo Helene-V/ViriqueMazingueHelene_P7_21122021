@@ -23,7 +23,7 @@
           @click="setActiveArticle(article, index)"
         >
         <div>
-          <div class="card h-100">
+          <div class="card h-100" style="width: 48rem;">
             <div class="card-body">
               <h2 class="card-title">{{ article.title }}</h2>
               <p class="card-text">{{ article.description }}</p>

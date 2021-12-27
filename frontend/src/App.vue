@@ -37,7 +37,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" />LogOut
+            <font-awesome-icon icon="times-circle" />LogOut
           </a>
         </li>
       </div>

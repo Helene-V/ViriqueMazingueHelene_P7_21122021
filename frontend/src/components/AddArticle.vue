@@ -24,6 +24,13 @@
         />
       </div>
 
+      <div class="form-group">
+      <input 
+        type="file"
+        ref="file"
+        @change="selectFile" />
+      </div>
+
       <button @click="saveArticle" class="btn btn-success">Submit</button>
     </div>
 
@@ -45,16 +52,22 @@ export default {
         id: null,
         title: "",
         description: "",
-        published: false
+        published: false,
+        selectedFile: ""
       },
       submitted: false
     };
   },
   methods: {
+    selectFile(event) { //Test récupération fichier image
+      this.selectedFile = this.$refs.file.files[0];
+    },
+
     saveArticle() {
       const data = {
         title: this.article.title,
-        description: this.article.description
+        description: this.article.description,
+        selectedFile: this.article.selectedFile,
       };
 
       ArticleDataService.create(data)
