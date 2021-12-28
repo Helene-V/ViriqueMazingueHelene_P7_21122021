@@ -58,18 +58,10 @@ router.beforeEach((to, from, next) => {
    const authRequired = !publicPages.includes(to.path);
    const loggedIn = localStorage.getItem('user');
 
-   // trying to access a restricted page + not logged in
-   // redirect to login page
+   // Protection des accès 
    if (authRequired && !loggedIn) {
      next('/login');
    } else {
      next();
    }
 });
-
-//const router = new VueRouter({
-//  mode: 'history',
-//  base: process.env.BASE_URL,
-//  routes
-//})
-//export default router

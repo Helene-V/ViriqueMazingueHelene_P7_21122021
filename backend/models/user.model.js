@@ -13,3 +13,12 @@ module.exports = (sequelize, Sequelize) => {
 
   return User;
 };
+
+/*
+La logique de la table User :
+- id
+- username
+- email
+- password
+- isAdmin
+  */

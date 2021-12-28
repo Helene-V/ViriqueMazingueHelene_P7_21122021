@@ -6,9 +6,6 @@ module.exports = (sequelize, Sequelize) => {
       description: {
         type: Sequelize.STRING
       },
-      published: {
-        type: Sequelize.BOOLEAN
-      },
       selectedFile: {
         type: Sequelize.BLOB('long')
       }
@@ -17,4 +14,12 @@ module.exports = (sequelize, Sequelize) => {
     return Article;
   };
 
-  // SelectedFile pour les images - ajout fs à faire
+/*
+La logique de la table Article :
+- id
+- title
+- content
+- dateAdd
+- userId
+- media
+  */

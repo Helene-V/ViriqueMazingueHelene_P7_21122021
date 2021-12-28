@@ -4,39 +4,41 @@ const Article = db.articles;
 const Op = db.Sequelize.Op;
 
 
-// Create and Save a new Article
+// Création d'un nouvel article
 exports.create = (req, res) => {
 
-  // Validate request
+  // La requête doit être valide
   if (!req.body.title) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Veuillez vérifier le contenu des différents champs"
     });
     return;
   }
 
-// Create a Article
+// Créer un article
   const article = {
     title: req.body.title,
     description: req.body.description,
-    published: req.body.published ? req.body.published : false,
     selectedFile: req.body.selectedFile, // Ajout fichier image
   };
 
-  // Save Article in the database
+
+  // Enregistrer l'article dans la BDD
   Article.create(article)
+  //Test multer :
+  //selectedFile: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`: req.body.selectedFile,
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Article."
+          err.message || "Erreur lors de la création de l'article"
       });
     });
 };
 
-// Retrieve all Articles from the database.
+// Retrouver tous les articles dans la BDD
 exports.findAll = (req, res) => {
   const title = req.query.title;
   const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
@@ -48,12 +50,12 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving articles."
+          err.message || "Une erreur empêche la récupération des articles"
       });
     });
 };
 
-// Find a single Article with an id
+// Retrouver un article par son id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -63,18 +65,18 @@ exports.findOne = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Article with id=${id}.`
+          message: `Nous ne retrouvons pas l'article avec l'id : ${id}`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving Article with id=" + id
+        message: "Problème de récupération de l'article ayant comme id : " + id
       });
     });
 };
 
-// Update a Article by the id in the request
+// Modifier un article
 exports.update = (req, res) => {
   const id = req.params.id;
 
@@ -84,76 +86,72 @@ exports.update = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Article was updated successfully."
+          message: "Votre article a bien été modifié !"
         });
       } else {
         res.send({
-          message: `Cannot update Article with id=${id}. Maybe Article was not found or req.body is empty!`
+          message: `Impossible de modifier l'article ayant l'id :${id}. Veuillez vérifier votre saisie et si l'article existe bien.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Article with id=" + id
+        message: "Erreur lors de la modification de l'article id : " + id
       });
     });
 };
 
-// Delete a Article with the specified id in the request
+// Supprimer un article
 exports.delete = (req, res) => {
   const id = req.params.id;
 
   Article.destroy({
-    where: { id: id }
+    where: { id: id } 
+      // fs multer :
+      //const filename = thing.imageUrl.split('/images/')[1];
+      //fs.unlink(`images/${filename}`, () => {
+          //db.Article.destroy({ 
+     //where: { id: req.params.Article }     
+      //})
+    //})
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Article was deleted successfully!"
+          message: "Votre article a bien été supprimé"
         });
       } else {
         res.send({
-          message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+          message: `Impossible de supprimer votre article ayant pour id : ${id}`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Article with id=" + id
+        message: "Impossible de supprimer l'article id : " + id
       });
     });
 };
 
-// Delete all Articles from the database.
+// Supprimer tous les articles de la BDD
 exports.deleteAll = (req, res) => {
   Article.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Articles were deleted successfully!` });
+      res.send({ message: `${nums} Tous les articles ont été supprimés` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all articles."
+          err.message || "Une erreur empêche la suppression multiple des articles"
       });
     });
 };
 
-// find all published Articles
-exports.findAllPublished = (req, res) => {
-  Article.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving articles."
-      });
-    });
-};
+
+
 
 //https://medium.com/@sarahdherr/sequelizes-update-method-example-included-39dfed6821d
 
@@ -170,4 +168,13 @@ exports.delete = (req, res) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+*/
+
+/*
+const filename = post.selectedFile.split('/images/')[1];
+
+fs.unlink(`images/${filename}`, () => {
+  db.Article.destroy({ 
+     where: { id: req.params.Article } 
+})
 */

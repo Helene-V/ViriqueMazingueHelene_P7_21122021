@@ -5,25 +5,22 @@ module.exports = app => {
   
     const router = require("express").Router();
   
-    // Create a new Article
+    // Créer un nouvel article
     router.post("/", multer, articles.create);
   
-    // Retrieve all Articles
+    // Retrouver tous les articles
     router.get("/", articles.findAll);
   
-    // Retrieve all published Articles
-    router.get("/published", articles.findAllPublished);
-  
-    // Retrieve a single Article with id
+    // Retrouver un article par son id
     router.get("/:id", articles.findOne);
   
-    // Update a Article with id
+    // Modifier un article via son id
     router.put("/:id", multer, articles.update);
   
-    // Delete a Article with id
+    // Supprimer un article via son id
     router.delete("/:id", articles.delete);
   
-    // Delete all Articles
+    // Supprimer tous les articles
     router.delete("/", articles.deleteAll);
   
     app.use('/api/articles', router);

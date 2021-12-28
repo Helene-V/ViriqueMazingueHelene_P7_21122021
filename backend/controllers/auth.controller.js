@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
-  // Save User to Database
+  // Enregistrement des utilisateurs dans la BDD
   User.create({
     username: req.body.username,
     email: req.body.email,
@@ -25,13 +25,13 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User registered successfully!" });
+            res.send({ message: "L'utilisateur est bien enregistré !" });
           });
         });
       } else {
-        // user role = 1
+        // user role = 1 créer un booléen si User ou Admin (Tinyint 0 ou 1)
         user.setRoles([1]).then(() => {
-          res.send({ message: "User registered successfully!" });
+          res.send({ message: "L'utilisateur est bien enregistré !" });
         });
       }
     })
@@ -48,7 +48,7 @@ exports.signin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "Utilisateur non trouvé" });
       }
 
       let passwordIsValid = bcrypt.compareSync(
@@ -64,7 +64,7 @@ exports.signin = (req, res) => {
       }
 
       let token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400 // 24 hours
+        expiresIn: 86400 // 24h
       });
 
       let authorities = [];

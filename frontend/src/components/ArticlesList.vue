@@ -27,6 +27,9 @@
             <div class="card-body">
               <h2 class="card-title">{{ article.title }}</h2>
               <p class="card-text">{{ article.description }}</p>
+              <div v-if="file">
+                  <img :src="path" />
+              </div>
             </div>
             <div class="card-footer">
               <a class="btn btn-info btn-sm" href="#!"><font-awesome-icon icon="comments" /></a>                 

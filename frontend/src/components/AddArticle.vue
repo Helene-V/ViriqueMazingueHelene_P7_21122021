@@ -52,7 +52,6 @@ export default {
         id: null,
         title: "",
         description: "",
-        published: false,
         selectedFile: ""
       },
       submitted: false

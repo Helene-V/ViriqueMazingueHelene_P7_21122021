@@ -1,6 +1,6 @@
 <template>
-  <div v-if="currentArticle" class="edit-form">
-    <h4>Article</h4>
+  <div v-if="currentArticle" class="edit-form mt-5">
+    <h4>Modification de mes articles</h4>
     <form>
       <div class="form-group">
         <label for="title">Title</label>
@@ -15,23 +15,7 @@
         />
       </div>
 
-      <div class="form-group">
-        <label><strong>Status:</strong></label>
-        {{ currentArticle.published ? "Published" : "Pending" }}
-      </div>
     </form>
-
-    <button class="badge badge-primary mr-2"
-      v-if="currentArticle.published"
-      @click="updatePublished(false)"
-    >
-      UnPublish
-    </button>
-    <button v-else class="badge badge-primary mr-2"
-      @click="updatePublished(true)"
-    >
-      Publish
-    </button>
 
     <button class="badge badge-danger mr-2"
       @click="deleteArticle"
@@ -69,24 +53,6 @@ export default {
       ArticleDataService.get(id)
         .then(response => {
           this.currentArticle = response.data;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    updatePublished(status) {
-      const data = {
-        id: this.currentArticle.id,
-        title: this.currentArticle.title,
-        description: this.currentArticle.description,
-        published: status
-      };
-
-      ArticleDataService.update(this.currentArticle.id, data)
-        .then(response => {
-          this.currentArticle.published = status;
           console.log(response.data);
         })
         .catch(e => {
