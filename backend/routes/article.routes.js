@@ -6,6 +6,35 @@ module.exports = app => {
     const router = require("express").Router();
   
     // Créer un nouvel article
+    router.post("/", articles.create);
+  
+    // Retrouver tous les articles
+    router.get("/", articles.findAll);
+  
+    // Retrouver un article par son id
+    router.get("/:id", articles.findOne);
+  
+    // Modifier un article via son id
+    router.put("/:id", articles.update);
+  
+    // Supprimer un article via son id
+    router.delete("/:id", articles.delete);
+  
+    // Supprimer tous les articles
+    router.delete("/", articles.deleteAll);
+  
+    app.use('/api/articles', router);
+  };
+
+//P6 : auth sur les routes 
+
+/*
+module.exports = app => {
+    const articles = require("../controllers/article.controller.js");
+  
+    const router = require("express").Router();
+  
+    // Créer un nouvel article
     router.post("/", multer, articles.create);
   
     // Retrouver tous les articles
@@ -24,9 +53,7 @@ module.exports = app => {
     router.delete("/", articles.deleteAll);
   
     app.use('/api/articles', router);
-  };
-
-//P6 : auth sur les routes 
+  }; */
 
   /* Récap de l'API :
   GET --> api/articles --> récupére tous les Articles

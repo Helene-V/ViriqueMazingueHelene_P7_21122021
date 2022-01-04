@@ -1,5 +1,10 @@
-const config = require("../config/db.config.js");
-
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize( 'groupomania_app', 'root', 'root', {
+  host: "localhost",
+  dialect: "mysql",
+  logging: false
+});
+/*
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
   config.DB,
@@ -18,30 +23,26 @@ const sequelize = new Sequelize(
     }
   }
 );
-
+*/
 const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.articles = require("./article.model.js")(sequelize, Sequelize); // POSTS DONT IMAGES
+db.articles = require("./article.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
-db.role.belongsToMany(db.user, {
-  through: "user_roles",
-  foreignKey: "roleId",
-  otherKey: "userId"
-});
-db.user.belongsToMany(db.role, {
-  through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "roleId"
+db.articles.belongsTo(db.user, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false,
+  },
+  onDelete: 'CASCADE',
+  onUpdate: 'NO ACTION',
 });
 
-db.ROLES = ["user", "admin"];
+//db.ROLES = ["user", "admin"];
 
 module.exports = db;
-
 
 //https://sequelize.org/master/manual/advanced-many-to-many.html#many-to-many-to-many-relationships-and-beyond

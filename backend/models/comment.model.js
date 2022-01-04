@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+/*module.exports = (sequelize, Sequelize) => {
     const Comment = sequelize.define("comment", {
       content: {
         type: Sequelize.STRING
@@ -7,6 +7,7 @@ module.exports = (sequelize, Sequelize) => {
   
     return Comment;
   };
+  */
 
   /*
 La logique de la table Comment :

@@ -1,5 +1,5 @@
 const db = require('../models');
-const fs = require('fs')
+//const fs = require('fs')
 const Article = db.articles;
 const Op = db.Sequelize.Op;
 
@@ -19,14 +19,17 @@ exports.create = (req, res) => {
   const article = {
     title: req.body.title,
     description: req.body.description,
-    selectedFile: req.body.selectedFile, // Ajout fichier image
+    media: req.body.media, // Ajout fichier image
   };
+
+//  console.log(req.file);
+//    if (req.file) {
+//        createObject.media = req.file.path
+//    }
 
 
   // Enregistrer l'article dans la BDD
   Article.create(article)
-  //Test multer :
-  //selectedFile: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`: req.body.selectedFile,
     .then(data => {
       res.send(data);
     })
@@ -107,13 +110,7 @@ exports.delete = (req, res) => {
 
   Article.destroy({
     where: { id: id } 
-      // fs multer :
-      //const filename = thing.imageUrl.split('/images/')[1];
-      //fs.unlink(`images/${filename}`, () => {
-          //db.Article.destroy({ 
-     //where: { id: req.params.Article }     
-      //})
-    //})
+
   })
     .then(num => {
       if (num == 1) {
@@ -151,30 +148,4 @@ exports.deleteAll = (req, res) => {
 };
 
 
-
-
 //https://medium.com/@sarahdherr/sequelizes-update-method-example-included-39dfed6821d
-
-/*
-exports.delete = (req, res) => {
-  const id = req.params.id
-    .then(article => {
-      const filename = thing.imageUrl.split('/images/')[1];
-      fs.unlink(`images/${filename}`, () => {
-        article.destroy({ id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
-          .catch(error => res.status(400).json({ error }));
-      });
-    })
-    .catch(error => res.status(500).json({ error }));
-};
-*/
-
-/*
-const filename = post.selectedFile.split('/images/')[1];
-
-fs.unlink(`images/${filename}`, () => {
-  db.Article.destroy({ 
-     where: { id: req.params.Article } 
-})
-*/
