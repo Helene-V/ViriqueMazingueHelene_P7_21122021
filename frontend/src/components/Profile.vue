@@ -15,10 +15,6 @@
       <br>
       {{currentUser.email}}
     </p>
-    <p class="text-center" >
-    <strong>Your authorities role :</strong>
-    <p class="text-center" v-for="(role,index) in currentUser.roles" :key="index">{{role}}
-    </p>
   </div>
 </template>
 

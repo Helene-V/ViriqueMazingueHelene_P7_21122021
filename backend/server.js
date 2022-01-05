@@ -17,6 +17,7 @@ const path = require('path');
 
 // Database
 const db = require("../backend/models");
+
 db.sequelize.sync();
 //force:
 //db.sequelize.sync({force: true}).then(() => {
