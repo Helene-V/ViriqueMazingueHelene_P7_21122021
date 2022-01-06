@@ -4,20 +4,16 @@ const morgan = require('morgan'); // à supprimer après le développement
 const cors = require('cors');
 const app = express();
 
-const userRoutes = require('../backend/routes/user.routes');
-const articleRoutes = require('../backend/routes/article.routes')
+const path = require('path');
 
-app.use(cors());
-app.use(morgan('dev'))  // à supprimer après le développement
-app.use(express.json());
-app.use(helmet());
-
-//const path = require('path');
+// Inmport des routes
+const userRoutes = require('./routes/user.routes');
+const articleRoutes = require('./routes/article.routes');
 
 // Database
 const db = require('../backend/models');
-
 db.sequelize.sync();
+// Faire un gros reset de la DB :
 //force:
 //db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Database with { force: true }');
@@ -31,12 +27,16 @@ app.use((req, res, next) => {
   next();
 });
 
+
+app.use(express.json());
+app.use(helmet());
+app.use(cors());
+app.use(morgan('dev'));  // à supprimer après le développement
+
 // Routes
 app.use('/api/auth', userRoutes);
 app.use('/api/articles', articleRoutes);
-// ensuite créer ma route pour les commentaires, ex. :
-// require('../backend/routes/comment.routes')(app);
-// ne pas oublier ma route pour les images avec multer :
-// app.use('/images', express.static(path.join(__dirname, 'images')));
+// ensuite créer ma route pour les commentaires
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;

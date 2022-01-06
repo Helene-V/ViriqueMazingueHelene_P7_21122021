@@ -2,63 +2,47 @@ const db = require('../models');
 //const fs = require('fs') - multer
 const Article = db.articles;
 const Op = db.Sequelize.Op; // Opérateur pour recherche like
+const authJwt = require('../middleware/authJwt')
 
-exports.create = (req, res) => {
-
-  Article.create({
-    title: req.body.title,
-    description: req.body.description,
-    media: req.body.media, // Ajout fichier media
-    userId: req.body.userId
-  })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send(console.log(error));
-    });
-};
-
-/*
 // Création d'un nouvel article
-exports.create = (req, res) => {
-  // La requête doit être valide
-  if (!req.body.title) {
+exports.createArticle = (req, res, next) => {
+  if (!req.body.content) {
     res.status(400).send({
       message: "Veuillez vérifier le contenu des différents champs"
     });
-    return;
+    return
   }
-
-// Créer un article
-  const article = {
-    title: req.body.title,
-    description: req.body.description,
-    media: req.body.media, // Ajout fichier media
-    userId: req.body.userId
-  };
-
-//Test envoi d'un media
-//  console.log(req.file);
-//    if (req.file) {
-//        createObject.media = req.file.path
-//    }
-
-  // Enregistrer l'article dans la BDD
-  Article.create(article)
-    .then(data => {
-      res.send(data);
+  if (req.file) {
+    Article.create({
+      userId: authJwt(req),
+      title: req.body.title,
+      description: req.body.description,
+      media: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Erreur lors de la création de l'article"
-      });
-    });
-};
-*/
+    .then(() => res.status(201).json({
+      message: "Votre article a bien été créé."
+    }))
+    .catch((error) => res.status(400).json({
+      message: "Erreur lors de la création de l'article."
+    }))
+    } else {
+      Article.create({
+        userId: authJwt(req),
+        title: req.body.title,
+        description: req.body.description,
+        media: null,
+      })
+      .then(() => res.status(201).json({
+        message: "Votre article a bien été publié."
+      }))
+      .catch((error) => res.status(400).json({
+        message: "Vous ne pouvez pas publier votre article."
+      }))
+    }
+}
+
 // Retrouver tous les articles dans la BDD
-exports.findAll = (req, res) => {
+exports.findAllArticles = (req, res, next) => {
   const title = req.query.title;
   const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
@@ -75,7 +59,7 @@ exports.findAll = (req, res) => {
 };
 
 // Retrouver un article par son id
-exports.findOne = (req, res) => {
+exports.findOneArticle = (req, res, next) => {
   const id = req.params.id;
 
   Article.findByPk(id)
@@ -96,7 +80,7 @@ exports.findOne = (req, res) => {
 };
 
 // Modifier un article
-exports.update = (req, res) => {
+exports.updateArticle = (req, res, next) => {
   const id = req.params.id;
 
   Article.update(req.body, {
@@ -121,7 +105,7 @@ exports.update = (req, res) => {
 };
 
 // Supprimer un article
-exports.delete = (req, res) => {
+exports.deleteArticle = (req, res, next) => {
   const id = req.params.id;
 
   Article.destroy({
@@ -147,7 +131,7 @@ exports.delete = (req, res) => {
 };
 
 // Supprimer tous les articles de la BDD
-exports.deleteAll = (req, res) => {
+exports.deleteAllArticles = (req, res, next) => {
   Article.destroy({
     where: {},
     truncate: false

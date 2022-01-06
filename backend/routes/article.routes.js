@@ -1,26 +1,19 @@
 const express = require('express');
 const router = express.Router();
+
+const authJwt = require('../middleware/authJwt')
 const articleCtrl = require('../controllers/article.controller');
-const auth = require('../middleware/authJwt')
-//const multer = require('../middleware/multer-config');
+const multer = require('../middleware/multer-config');
 
   
-// Créer un nouvel article
-router.post("/", auth, articleCtrl.create);
+router.post('/', authJwt, multer, articleCtrl.createArticle);
+router.put('/:id', authJwt, multer, articleCtrl.updateArticle);
+router.delete('/:id', authJwt, articleCtrl.deleteArticle);
+router.get('/', authJwt, articleCtrl.findAllArticles);
+router.get('/:id', authJwt, articleCtrl.findOneArticle);
   
-// Retrouver tous les articles
-router.get("/", auth, articleCtrl.findAll);
-  
-// Retrouver un article par son id
-router.get("/:id", auth, articleCtrl.findOne);
-  
-// Modifier un article via son id
-router.put("/:id", auth, articleCtrl.update);
-  
-// Supprimer un article via son id
-router.delete("/:id", auth, articleCtrl.delete);
-  
-// Supprimer tous les articles
-router.delete("/", auth, articleCtrl.deleteAll);
-  
+
 module.exports = router;
+
+
+// L'admin doit pouvoir supprimer un post et son média si présent
