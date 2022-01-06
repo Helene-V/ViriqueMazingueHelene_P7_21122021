@@ -1,4 +1,5 @@
-const multer = require('../middleware/multer-config');
+//const multer = require('../middleware/multer-config');
+
 
 module.exports = app => {
     const articles = require("../controllers/article.controller.js");
@@ -26,9 +27,11 @@ module.exports = app => {
     app.use('/api/articles', router);
   };
 
-//P6 : auth sur les routes 
 
-/*
+/* Test avec Multer
+
+const multer = require('../middleware/multer-config');
+
 module.exports = app => {
     const articles = require("../controllers/article.controller.js");
   
@@ -58,7 +61,7 @@ module.exports = app => {
   /* Récap de l'API :
   GET --> api/articles --> récupére tous les Articles
   GET --> api/articles/:id --> récupère l'Article par son id
-  POST --> api/articles --> ajoute un nouveau Article
+  POST --> api/articles --> ajoute un nouvel Article
   PUT --> api/articles/:id --> modifie un Article récupéré par son id
   DELETE --> api/articles/:id --> supprime un Article récupéré par son id
   DELETE --> api/articles --> supprime TOUS les Articles

@@ -1,12 +1,11 @@
 const db = require('../models');
-//const fs = require('fs')
+//const fs = require('fs') - multer
 const Article = db.articles;
-const Op = db.Sequelize.Op;
+const Op = db.Sequelize.Op; // Opérateur pour recherche like
 
 
 // Création d'un nouvel article
 exports.create = (req, res) => {
-
   // La requête doit être valide
   if (!req.body.title) {
     res.status(400).send({
@@ -19,15 +18,16 @@ exports.create = (req, res) => {
   const article = {
     title: req.body.title,
     description: req.body.description,
-    media: req.body.media, // Ajout fichier image
+    media: req.body.media, // Ajout fichier media
+    userId: req.body.userId
   };
 
-//  console.log(req.file);
-//    if (req.file) {
-//        createObject.media = req.file.path
-//    }
-
-
+/* Test envoi d'un media
+  console.log(req.file);
+    if (req.file) {
+        createObject.media = req.file.path
+    }
+*/
   // Enregistrer l'article dans la BDD
   Article.create(article)
     .then(data => {
