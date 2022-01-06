@@ -1,41 +1,47 @@
-const express = require('express')
-const morgan = require('morgan') // à supprimer après le développement
-const cors = require('cors');
-const app = express();
+const http = require('http'); // Importation du package de requêtes http
+const app = require('./app'); // Importation de l'application
 
-const corsOptions = {
-  origin: "http://localhost:8081"
+const normalizePort = val => { // Renvoie un port valide
+  const port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+const port = normalizePort(process.env.PORT || '8080'); // Indication de l'environnement/du port utilisé
+app.set('port', port);
+
+const errorHandler = error => { // Recherche les différentes erreur et gestion de ces erreurs
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges.');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use.');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
 };
 
-app.use(cors(corsOptions));
-app.use(morgan('dev'))  // à supprimer après le développement
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const server = http.createServer(app);
 
-const path = require('path');
-
-// Database
-const db = require('../backend/models');
-
-db.sequelize.sync();
-//force:
-//db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Database with { force: true }');
-// });
-
-// Routes
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Groupomania application." });
+server.on('error', errorHandler);
+server.on('listening', () => { // Ecouteur d'évènements
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+  console.log('Listening on ' + bind);
 });
-require('../backend/routes/auth.routes')(app);
-require('../backend/routes/user.routes')(app);
-require('../backend/routes/article.routes')(app);
-// ensuite créer ma route pour les commentaires, ex. :
-// require('../backend/routes/comment.routes')(app);
-// ne pas oublier ma route pour les images avec multer :
-// app.use('/images', express.static(path.join(__dirname, 'images')));
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+server.listen(port);

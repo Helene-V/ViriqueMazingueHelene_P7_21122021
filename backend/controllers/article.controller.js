@@ -3,7 +3,23 @@ const db = require('../models');
 const Article = db.articles;
 const Op = db.Sequelize.Op; // Opérateur pour recherche like
 
+exports.create = (req, res) => {
 
+  Article.create({
+    title: req.body.title,
+    description: req.body.description,
+    media: req.body.media, // Ajout fichier media
+    userId: req.body.userId
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send(console.log(error));
+    });
+};
+
+/*
 // Création d'un nouvel article
 exports.create = (req, res) => {
   // La requête doit être valide
@@ -22,12 +38,12 @@ exports.create = (req, res) => {
     userId: req.body.userId
   };
 
-/* Test envoi d'un media
-  console.log(req.file);
-    if (req.file) {
-        createObject.media = req.file.path
-    }
-*/
+//Test envoi d'un media
+//  console.log(req.file);
+//    if (req.file) {
+//        createObject.media = req.file.path
+//    }
+
   // Enregistrer l'article dans la BDD
   Article.create(article)
     .then(data => {
@@ -40,7 +56,7 @@ exports.create = (req, res) => {
       });
     });
 };
-
+*/
 // Retrouver tous les articles dans la BDD
 exports.findAll = (req, res) => {
   const title = req.query.title;
