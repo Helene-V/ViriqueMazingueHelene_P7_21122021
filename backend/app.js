@@ -4,6 +4,9 @@ const morgan = require('morgan'); // à supprimer après le développement
 const cors = require('cors');
 const app = express();
 
+const userRoutes = require('../backend/routes/user.routes');
+const articleRoutes = require('../backend/routes/article.routes')
+
 app.use(cors());
 app.use(morgan('dev'))  // à supprimer après le développement
 app.use(express.json());
@@ -29,12 +32,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Groupomania application." });
-});
-//require('../backend/routes/auth.routes')(app);
-require('../backend/routes/user.routes')(app);
-require('../backend/routes/article.routes')(app);
+app.use('/api/auth', userRoutes);
+app.use('/api/articles', articleRoutes);
 // ensuite créer ma route pour les commentaires, ex. :
 // require('../backend/routes/comment.routes')(app);
 // ne pas oublier ma route pour les images avec multer :

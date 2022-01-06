@@ -1,4 +1,4 @@
-const http = require('http'); // Importation du package de requêtes http
+const http = require('http'); // Importation du package de requêtes https : const https = require('https'); 
 const app = require('./app'); // Importation de l'application
 
 const normalizePort = val => { // Renvoie un port valide
@@ -35,7 +35,7 @@ const errorHandler = error => { // Recherche les différentes erreur et gestion 
   }
 };
 
-const server = http.createServer(app);
+const server = http.createServer(app); //const server = https.createServer(app);
 
 server.on('error', errorHandler);
 server.on('listening', () => { // Ecouteur d'évènements
