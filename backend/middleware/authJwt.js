@@ -3,18 +3,19 @@ const authConfig = require('../config/auth.config.js');
 
 module.exports = (req, res, next) => {
   try {
-    //const token = req.headers.authorization.split(' ')[1]; // Option P6 - Récupération du token dans le header
-    let token = req.headers["x-access-token"]; // Option 2
+    const token = req.headers.authorization.split(' ')[1]; // Option P6 - Récupération du token dans le header
+    //let token = req.headers["x-access-token"]; // Option 2
     const decodedToken = jwt.verify(token, authConfig.secret); // Décoder le token grâce à la clef secrète
     const userId = decodedToken.userId; // Récupération de l'userId dans le tocken
-    if (req.body.userId !== userId) { // Si le token est différent de l'userId la requête sera bloquée pour sécuriser les routes de l'API
+    if (req.body.userId !== userId) { 
       throw 'Invalid user ID';
+      console.log("Invalid user ID")
     } else {
-    //  req.token = token;
-    //  req.user = userId;
+      console.log("ok ok")
       next();
     }
-  } catch {
+  } catch(e) {
+    console.log(e);
     res.status(401).json({
       error: new Error(`L'utilisateur n'est pas autorisé à accèder à cette ressource.`)
     });
