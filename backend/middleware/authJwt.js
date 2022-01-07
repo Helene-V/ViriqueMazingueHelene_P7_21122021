@@ -7,11 +7,11 @@ module.exports = (req, res, next) => {
     let token = req.headers["x-access-token"]; // Option 2
     const decodedToken = jwt.verify(token, authConfig.secret); // Décoder le token grâce à la clef secrète
     const userId = decodedToken.userId; // Récupération de l'userId dans le tocken
-    if (req.body.userId && req.body.userId !== userId) { // Si le token est différent de l'userId la requête sera bloquée pour sécuriser les routes de l'API
+    if (req.body.userId !== userId) { // Si le token est différent de l'userId la requête sera bloquée pour sécuriser les routes de l'API
       throw 'Invalid user ID';
     } else {
-      req.token = token;
-      req.user = userId;
+    //  req.token = token;
+    //  req.user = userId;
       next();
     }
   } catch {
