@@ -9,11 +9,10 @@ module.exports = (req, res, next) => {
     const userId = decodedToken.userId; // Récupération de l'userId dans le tocken
     if (req.body.userId !== userId) { 
       throw 'Invalid user ID';
-      console.log("Invalid user ID")
     } else {
-      console.log("ok ok")
       next();
-    }
+    }    console.log(decodedToken.header);
+    console.log(decodedToken.payload);
   } catch(e) {
     console.log(e);
     res.status(401).json({
