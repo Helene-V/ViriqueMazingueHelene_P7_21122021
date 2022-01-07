@@ -1,3 +1,1 @@
-module.exports = {
-  secret: "my-secret-key-projet-7"
-};
+module.exports = 'PRIVATE_KEY'
