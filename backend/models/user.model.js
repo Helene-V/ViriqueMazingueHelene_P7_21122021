@@ -7,11 +7,17 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define('user', {
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: {
+        msg: 'Ce nom est déjà pris.'
+      }
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: {
+        msg: 'Cette adresse mail est déjà utilisée.'
+      }
     },
     password: {
       type: DataTypes.STRING,
