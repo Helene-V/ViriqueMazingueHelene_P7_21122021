@@ -41,28 +41,75 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!"
+          message: "Mot de passe invalide !"
         });
       }
+      
+      let token = jwt.sign(
+        { id: user.id },
+        config.secret,
+        { expiresIn: 86400}
+        );
 
-      let token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400 // 24h
-      });
-     
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          accessToken: token
-        });
-     
+      res.status(200).json({
+        id: user.id,
+        username: user.username,
+        email:user.email,
+        isAdmin: user.isAdmin,
+        accessToken: token,
+        userId: user.id,
+        })
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
 };
 
+/*
+exports.signin = (req, res) => {
+  // Se connecter
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: "Utilisateur non trouvé" });
+      }
+
+      let passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: "Mot de passe invalide !"
+        });
+      }
+      
+      let token = jwt.sign(
+        { id: user.id },
+        config.secret,
+        { expiresIn: 86400}
+        );
+
+      res.status(200).send({
+        id: user.id,
+        username: user.username,
+        email:user.email,
+        isAdmin: user.isAdmin,
+        accessToken: token,
+        userId: user.id,
+        })
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};
+*/
 exports.delete = (req, res) => {
   // Supprimer un compte utilisateur
   User.destroy({
@@ -75,6 +122,8 @@ exports.delete = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+
 
 
 /*

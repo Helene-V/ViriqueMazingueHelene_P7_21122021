@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet'); // Package Helmet pour la sécurité des en-têtes
 const morgan = require('morgan'); // à supprimer après le développement
+const cors = require('cors');
 const app = express();
 
 const path = require('path');
@@ -18,6 +19,7 @@ db.sequelize.sync();
 //   console.log('Drop and Resync Database with { force: true }');
 // });
 
+
 // CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,9 +29,14 @@ app.use((req, res, next) => {
 });
 
 
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));  // à supprimer après le développement
+app.use(cors())
+
 
 // Routes
 app.use('/api/auth', userRoutes);

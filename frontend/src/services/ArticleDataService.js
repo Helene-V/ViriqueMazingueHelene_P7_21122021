@@ -1,5 +1,6 @@
 import http from "../http";
 
+
 class ArticleDataService {
   getAll() {
     return http.get("/articles");

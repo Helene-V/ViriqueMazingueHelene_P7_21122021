@@ -1,14 +1,17 @@
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth.config.js');
-  
+
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1]; // Récupération du token dans le header
+    //const token = req.headers.authorization.split(' ')[1]; // Option P6 - Récupération du token dans le header
+    let token = req.headers["x-access-token"]; // Option 2
     const decodedToken = jwt.verify(token, authConfig.secret); // Décoder le token grâce à la clef secrète
     const userId = decodedToken.userId; // Récupération de l'userId dans le tocken
     if (req.body.userId && req.body.userId !== userId) { // Si le token est différent de l'userId la requête sera bloquée pour sécuriser les routes de l'API
       throw 'Invalid user ID';
     } else {
+      req.token = token;
+      req.user = userId;
       next();
     }
   } catch {
@@ -18,8 +21,10 @@ module.exports = (req, res, next) => {
   }
 };
 
-/*const jwt = require('jsonwebtoken');
-const config = require('../config/auth.config.js');
+
+/*
+//const jwt = require('jsonwebtoken');
+//const config = require('../config/auth.config.js');
 //const db = require('../models');
 
 
@@ -32,7 +37,7 @@ verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, authConfig.secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
         message: "Unauthorized!"
@@ -49,7 +54,9 @@ const authJwt = {
 };
 module.exports = authJwt;
 */
-//Token - isAdmin ou pas ?
+//Token - isAdmin ou pas
+
+
 
 /* Exemple P6
 const jwt = require('jsonwebtoken')

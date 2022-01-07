@@ -2,7 +2,6 @@ const db = require('../models');
 //const fs = require('fs') - multer
 const Article = db.articles;
 const Op = db.Sequelize.Op; // Opérateur pour recherche like
-const authJwt = require('../middleware/authJwt')
 
 // Création d'un nouvel article
 exports.createArticle = (req, res, next) => {
@@ -14,7 +13,7 @@ exports.createArticle = (req, res, next) => {
   }
   if (req.file) {
     Article.create({
-      userId: authJwt(req),
+      userId: req.body.userId,
       title: req.body.title,
       description: req.body.description,
       media: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -27,7 +26,7 @@ exports.createArticle = (req, res, next) => {
     }))
     } else {
       Article.create({
-        userId: authJwt(req),
+        userId: req.body.userId,
         title: req.body.title,
         description: req.body.description,
         media: null,

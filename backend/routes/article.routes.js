@@ -7,10 +7,11 @@ const multer = require('../middleware/multer-config');
 
   
 router.post('/', authJwt, multer, articleCtrl.createArticle);
-router.put('/:id', authJwt, multer, articleCtrl.updateArticle);
-router.delete('/:id', authJwt, articleCtrl.deleteArticle);
 router.get('/', authJwt, articleCtrl.findAllArticles);
 router.get('/:id', authJwt, articleCtrl.findOneArticle);
+router.put('/:id', authJwt, multer, articleCtrl.updateArticle);
+router.delete('/:id', authJwt, articleCtrl.deleteArticle);
+
   
 
 module.exports = router;
