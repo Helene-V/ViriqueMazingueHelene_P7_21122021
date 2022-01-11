@@ -2,6 +2,9 @@ const db = require('../models');
 //const fs = require('fs') - multer
 const Article = db.articles;
 const Op = db.Sequelize.Op; // Opérateur pour recherche like
+//const getToken = require('../middleware/authJwt');
+const userToken = require('../middleware/authJwt');
+const { user } = require('../models');
 
 // Création d'un nouvel article
 exports.createArticle = (req, res, next) => {
@@ -11,9 +14,19 @@ exports.createArticle = (req, res, next) => {
     });
     return
   }
-  if (req.file) {
-    Article.create({
-      userId: req.body.userId,
+
+else {
+  Article.create({
+    title: req.body.title,
+    description: req.body.description,
+    media: null,
+    userId: userId,
+  })
+}
+
+/*  if (req.file) {
+    Article.create({ // je contrôle qu'il y a le token mais pas d'envoi dans la DB, il est utilisé uniquement à la connexion à l'appli
+      userId: userToken, //userId: getToken(req),
       title: req.body.title,
       description: req.body.description,
       media: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -26,7 +39,6 @@ exports.createArticle = (req, res, next) => {
     }))
     } else {
       Article.create({
-        userId: req.body.userId,
         title: req.body.title,
         description: req.body.description,
         media: null,
@@ -37,7 +49,7 @@ exports.createArticle = (req, res, next) => {
       .catch((error) => res.status(400).json({
         message: "Vous ne pouvez pas publier votre article."
       }))
-    }
+    }*/
 }
 
 // Retrouver tous les articles dans la BDD

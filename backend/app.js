@@ -1,7 +1,6 @@
 const express = require('express');
 const helmet = require('helmet'); // Package Helmet pour la sécurité des en-têtes
 const morgan = require('morgan'); // à supprimer après le développement
-const cors = require('cors');
 const app = express();
 
 const path = require('path');
@@ -35,7 +34,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));  // à supprimer après le développement
-app.use(cors())
 
 
 // Routes

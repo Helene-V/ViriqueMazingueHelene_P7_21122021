@@ -3,15 +3,41 @@ const authConfig = require('../config/auth.config.js');
 
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1]; // Option P6 - Récupération du token dans le header
+    const token = req.headers.authorization.split(' ')[1];
+    jwt.verify(token, authConfig.secret, (err, user) => {
+    if (err) {
+      return res.status(403).json({message: 'pb token', err, user, token})
+    } else {
+      next()
+    }
+    })
+
+  } catch (error) {
+    res.status(401).json({
+      error: new Error('Invalid request!')
+    })
+  }
+}
+
+
+
+/*
+module.exports = (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1];
     //let token = req.headers["x-access-token"]; // Option 2
-    const decodedToken = jwt.verify(token, authConfig.secret); // Décoder le token grâce à la clef secrète
-    const userId = decodedToken.userId; // Récupération de l'userId dans le tocken
-    if (req.body.userId !== userId) { 
+
+    const decodedToken = jwt.verify(token, authConfig.secret); 
+    
+    //const userId = decodedToken.id; dans le controller
+    //const userId = decodedToken.userId;
+    if (req.body.userId !== userId) {  //(req.body.userId && req.body.userId !== userId)
       throw 'Invalid user ID';
     } else {
+      req.userId = decoded.id; //test
       next();
-    }    console.log(decodedToken.header);
+    }
+    console.log(decodedToken.header);
     console.log(decodedToken.payload);
   } catch(e) {
     console.log(e);
@@ -19,8 +45,21 @@ module.exports = (req, res, next) => {
       error: new Error(`L'utilisateur n'est pas autorisé à accèder à cette ressource.`)
     });
   }
+  console.log(userId)
 };
 
+*/
+/*
+const getToken = (req) => {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, authConfig.secret);
+    const userId = decodedToken.userId;
+    console.log(userId)
+    return userId;
+};
+
+module.exports = getToken;
+*/
 
 /*
 //const jwt = require('jsonwebtoken');
@@ -58,7 +97,7 @@ module.exports = authJwt;
 
 
 
-/* Exemple P6
+/* Exemple Pokemon API
 const jwt = require('jsonwebtoken')
 const privateKey = require('../auth/private_key')
   
@@ -86,4 +125,26 @@ module.exports = (req, res, next) => {
     }
   })
 }
+*/
+
+
+
+/* Exemple P6
+const jwt = require('jsonwebtoken'); // Implémentation de l'authentification par token pour protéger les routes
+
+module.exports = (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(' ')[1]; // Récupération du token dans le header
+    jwt.verify(token, 'RANDOM_TOKEN_SECRET'),(err, user) => {
+    if (err) {
+      return res.status(403).json({message: 'pb token', err, user, token})
+    } else {
+      next();
+    })
+  } catch {
+    res.status(401).json({
+      error: new Error('Invalid request!')
+    });
+  }
+};
 */

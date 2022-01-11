@@ -3,7 +3,7 @@ const config = require('../config/auth.config');
 const User = db.user;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
+const userToken = require('../middleware/authJwt');
 
 exports.signup = (req, res) => {
   // Enregistrement des utilisateurs dans la BDD
@@ -57,7 +57,7 @@ exports.signin = (req, res) => {
         email:user.email,
         isAdmin: user.isAdmin,
         accessToken: token,
-        userId: user.id,
+        userToken: userToken,
         })
     })
     .catch(err => {
